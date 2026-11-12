@@ -1,11 +1,60 @@
+#include <ctype.h>
+#include <errno.h>
+#include <float.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+double leerNumeroPositivo(const char mensaje[])
+{
+    char entrada[100];
+    char *fin;
+    double valor;
+    int caracter;
+
+    while (1)
+    {
+        printf("%s", mensaje);
+
+        if (fgets(entrada, sizeof(entrada), stdin) == NULL)
+        {
+            printf("\nNo se pudo leer el dato.\n");
+            exit(EXIT_FAILURE);
+        }
+
+        if (strchr(entrada, '\n') == NULL && !feof(stdin))
+        {
+            while ((caracter = getchar()) != '\n' && caracter != EOF)
+            {
+            }
+            printf("La entrada es demasiado larga. Intente nuevamente.\n");
+            continue;
+        }
+
+        errno = 0;
+        valor = strtod(entrada, &fin);
+
+        while (isspace((unsigned char)*fin))
+        {
+            fin++;
+        }
+
+        if (fin == entrada || *fin != '\0' || errno == ERANGE ||
+            !(valor > 0.0) || valor > DBL_MAX)
+        {
+            printf("Ingrese un numero valido mayor que cero.\n");
+            continue;
+        }
+
+        return valor;
+    }
+}
 
 int main(void)
 {
     char opcion[10];
-    double masa = 26000.0;
-    double velocidad = 10900.0;
+    double masa;
+    double velocidad;
     double energiaCinetica;
 
     do
@@ -31,9 +80,11 @@ int main(void)
         }
         else if (strcmp(opcion, "2\n") == 0 || strcmp(opcion, "2") == 0)
         {
+            masa = leerNumeroPositivo("Ingrese la masa de Orion en kg: ");
+            velocidad = leerNumeroPositivo("Ingrese la velocidad en m/s: ");
             energiaCinetica = 0.5 * masa * velocidad * velocidad;
-            printf("\nEnergia cinetica inicial de Orion:\n");
-            printf("K = 1/2 * masa * velocidad^2\n");
+            printf("\nEnergia cinetica calculada:\n");
+            printf("K = 1/2 * %.1f kg * (%.1f m/s)^2\n", masa, velocidad);
             printf("K = %.2e joules\n", energiaCinetica);
         }
         else if (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0)
