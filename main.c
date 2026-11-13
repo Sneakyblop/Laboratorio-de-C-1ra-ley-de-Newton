@@ -15,7 +15,7 @@ double leerNumeroPositivo(const char mensaje[])
     while (1)
     {
         printf("%s", mensaje);
-
+        hola
         if (fgets(entrada, sizeof(entrada), stdin) == NULL)
         {
             printf("\nNo se pudo leer el dato.\n");
