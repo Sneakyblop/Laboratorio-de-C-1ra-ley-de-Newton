@@ -3,8 +3,28 @@ Trabajo de C del grupo "Las Ingenieras", com C 2026
 
 ## Avance actual
 
-El programa presenta un menu sencillo para leer una breve explicacion sobre
-la inercia de Orion y calcular su energia cinetica inicial con los valores del
-escenario (masa de 26.000 kg y velocidad de 10.900 m/s). Todavia no simula la
-trayectoria.
+El programa  presenta un menu para leer sobre la
+inercia de Orion, calcular su energia cinetica y consultar una explicacion
+cualitativa sobre el viaje Tierra-Luna. Tambien permite estimar un tiempo de
+viaje a velocidad constante; esta aproximacion no considera la gravedad ni
+representa la trayectoria real.
 
+Para el calculo de energia, se ingresan la masa en kg y la velocidad en m/s.
+Como referencia, se pueden usar los valores del escenario: 26000 kg y
+10900 m/s.
+
+El programa todavia no simula la trayectoria. La lectura y validacion de
+numeros esta separada en `validaciones.c` y `validaciones.h`, y el calculo de
+energia cinetica esta en `simulador.c` y `simulador.h`.
+
+La opcion 6 estima el trabajo externo por unidad de masa hasta un punto donde
+se igualan las atracciones gravitatorias de la Tierra y la Luna. Usa los datos
+de referencia, supone que Orion llega en reposo y no considera la rotacion del
+sistema. Es una aproximacion para el ejercicio, no una simulacion de la
+trayectoria real.
+
+Para compilar con GCC:
+
+```sh
+gcc -std=c99 -Wall -Wextra -pedantic main.c validaciones.c simulador.c -lm -o artemis
+```
