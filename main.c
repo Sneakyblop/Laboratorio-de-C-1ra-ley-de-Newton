@@ -1,18 +1,30 @@
+#include <float.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "simulador.h"
+#include "validaciones.h"
 
 int main(void)
 {
     char opcion[10];
-    double masa = 26000.0;
-    double velocidad = 10900.0;
+    double masa;
+    double velocidad;
     double energiaCinetica;
+    double distanciaKm;
+    double tiempoSegundos;
+
+    printf("Bienvenido/a, somos el grupo \"Las Ingenieras\".\n");
+    printf("En este programa vas a conocer el viaje de Orion hacia la Luna\n");
+    printf("y explorar algunos conceptos del escenario de inyeccion translunar.\n");
 
     do
     {
         printf("\nSimulador de Misiones Artemis - Escenario TLI\n");
         printf("1. Leer sobre la inercia de Orion\n");
         printf("2. Calcular energia cinetica inicial\n");
+        printf("3. Leer sobre el gasto de combustible\n");
+        printf("4. Estimar tiempo de viaje a velocidad constante\n");
         printf("0. Salir\n");
         printf("Seleccione una opcion: ");
 
@@ -31,16 +43,50 @@ int main(void)
         }
         else if (strcmp(opcion, "2\n") == 0 || strcmp(opcion, "2") == 0)
         {
-            energiaCinetica = 0.5 * masa * velocidad * velocidad;
-            printf("\nEnergia cinetica inicial de Orion:\n");
-            printf("K = 1/2 * masa * velocidad^2\n");
+            masa = leerNumeroPositivo("Ingrese la masa de Orion en kg: ");
+            velocidad = leerNumeroPositivo("Ingrese la velocidad en m/s: ");
+            energiaCinetica = calcularEnergiaCinetica(masa, velocidad);
+            printf("\nEnergia cinetica calculada:\n");
+            printf("K = 1/2 * %.1f kg * (%.1f m/s)^2\n", masa, velocidad);
             printf("K = %.2e joules\n", energiaCinetica);
+        }
+        else if (strcmp(opcion, "3\n") == 0 || strcmp(opcion, "3") == 0)
+        {
+            printf("\nLa Tierra tiene una masa mucho mayor que la Luna y, por eso,\n");
+            printf("su atraccion gravitatoria es mas intensa. Alejarse de la\n");
+            printf("Tierra requiere aportar energia para vencer esa atraccion.\n");
+            printf("En el regreso, la gravedad terrestre ayuda a acelerar la\n");
+            printf("nave. La trayectoria y las condiciones iniciales tambien\n");
+            printf("influyen en el combustible necesario.\n");
+        }
+        else if (strcmp(opcion, "4\n") == 0 || strcmp(opcion, "4") == 0)
+        {
+            printf("\nEstimacion idealizada: no considera la gravedad ni cambios\n");
+            printf("de velocidad, por lo que no representa la trayectoria real.\n");
+            distanciaKm = leerNumeroPositivo("Distancia en km: ");
+            velocidad = leerNumeroPositivo("Velocidad constante en m/s: ");
+
+            if (distanciaKm > DBL_MAX / 1000.0 ||
+                velocidad < (distanciaKm * 1000.0) / DBL_MAX)
+            {
+                printf("Los valores ingresados son demasiado grandes para calcular.\n");
+            }
+            else
+            {
+                tiempoSegundos = (distanciaKm * 1000.0) / velocidad;
+                printf("Tiempo estimado: %.0f segundos (%.2f horas).\n",
+                       tiempoSegundos, tiempoSegundos / 3600.0);
+                printf("Se uso la formula tiempo = distancia / velocidad.\n");
+            }
         }
         else if (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0)
         {
-            printf("Opcion no valida. Ingrese 1, 2 o 0.\n");
+            printf("Opcion no valida. Ingrese 1, 2, 3, 4 o 0.\n");
         }
     } while (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0);
+
+    printf("\nGracias por usar el simulador: acompanando a Orion en su viaje a la Luna.\n");
+    printf("AED 2026, Comision C. Hasta la proxima!\n");
 
     return 0;
 }
