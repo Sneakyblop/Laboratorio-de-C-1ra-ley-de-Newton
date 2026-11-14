@@ -13,6 +13,8 @@ int main(void)
     double energiaCinetica;
     double distanciaKm;
     double tiempoSegundos;
+    double distanciaEquilibrio;
+    double trabajoPorMasa;
 
     printf("Bienvenido/a, somos el grupo \"Las Ingenieras\".\n");
     printf("En este programa vas a conocer el viaje de Orion hacia la Luna\n");
@@ -26,6 +28,7 @@ int main(void)
         printf("3. Leer sobre el gasto de combustible\n");
         printf("4. Estimar tiempo de viaje a velocidad constante\n");
         printf("5. Ver datos de referencia de la mision\n");
+        printf("6. Estimar trabajo externo hasta el punto de equilibrio\n");
         printf("0. Salir\n");
         printf("Seleccione una opcion: ");
 
@@ -88,6 +91,29 @@ int main(void)
             printf("Altitud de orbita baja: 192000 m\n");
             printf("Distancia media Tierra-Luna: 384000 km\n");
             printf("Estos valores pueden usarse como referencia en los calculos.\n");
+        }
+        else if (strcmp(opcion, "6\n") == 0 || strcmp(opcion, "6") == 0)
+        {
+            printf("\nEstimacion con los datos de referencia de la mision.\n");
+            printf("El punto se estima igualando la atraccion de la Tierra y la Luna.\n");
+            printf("Se ignora la rotacion del sistema y se supone llegada en reposo.\n");
+
+            if (calcularTrabajoPorMasa(ALTITUD_ORBITA_M,
+                                       DISTANCIA_TIERRA_LUNA_M,
+                                       VELOCIDAD_TLI_MS,
+                                       &distanciaEquilibrio,
+                                       &trabajoPorMasa))
+            {
+                printf("Punto de equilibrio estimado: %.2f km desde el centro terrestre.\n",
+                       distanciaEquilibrio / 1000.0);
+                printf("Trabajo externo por unidad de masa: %.2e J/kg\n",
+                       trabajoPorMasa);
+                printf("Se usa Wext/m = diferencia de energia potencial - K inicial/m.\n");
+            }
+            else
+            {
+                printf("No se pudo calcular con estos datos del modelo.\n");
+            }
         }
         else if (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0)
         {
