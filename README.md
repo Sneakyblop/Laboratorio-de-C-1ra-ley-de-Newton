@@ -28,3 +28,7 @@ Para compilar con GCC:
 ```sh
 gcc -std=c99 -Wall -Wextra -pedantic main.c validaciones.c simulador.c -lm -o artemis
 ```
+
+Al salir, se muestra un reporte de los calculos de energia cinetica, trabajo
+y tiempo de viaje realizados durante la sesion. Se guardan hasta 50
+resultados de cada tipo.
