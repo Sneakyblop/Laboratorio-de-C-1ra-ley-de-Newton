@@ -1,13 +1,12 @@
 #include <float.h>
 #include <stdio.h>
-#include <string.h>
 
 #include "simulador.h"
 #include "validaciones.h"
 
 int main(void)
 {
-    char opcion[10];
+    int opcion; 
     double masa;
     double velocidad;
     double energiaCinetica;
@@ -15,7 +14,9 @@ int main(void)
     double tiempoSegundos;
     double distanciaEquilibrio;
     double trabajoPorMasa;
+    Reporte reporte;
 
+    inicializarReporte(&reporte);  
     printf("Bienvenido/a, somos el grupo \"Las Ingenieras\".\n");
     printf("En este programa vas a conocer el viaje de Orion hacia la Luna\n");
     printf("y explorar algunos conceptos del escenario de inyeccion translunar.\n");
@@ -31,21 +32,16 @@ int main(void)
         printf("6. Estimar trabajo externo hasta el punto de equilibrio\n");
         printf("0. Salir\n");
         printf("Seleccione una opcion: ");
+        opcion = leerEnteroEnRango("Seleccione una opcion: ", 0, 6); 
 
-        if (fgets(opcion, sizeof(opcion), stdin) == NULL)
-        {
-            printf("\nNo se pudo leer la opcion.\n");
-            return 1;
-        }
-
-        if (strcmp(opcion, "1\n") == 0 || strcmp(opcion, "1") == 0)
+        if (opcion == 1)
         {
             printf("\nLuego de la maniobra TLI, los motores se apagan y Orion\n");
             printf("continua su movimiento. Segun la primera ley de Newton,\n");
             printf("la nave mantendria su velocidad si no actuaran fuerzas\n");
             printf("sobre ella; la gravedad terrestre modifica su movimiento.\n");
         }
-        else if (strcmp(opcion, "2\n") == 0 || strcmp(opcion, "2") == 0)
+        else if (opcion == 2)       
         {
             masa = leerNumeroPositivo("Ingrese la masa de Orion en kg: ");
             velocidad = leerNumeroPositivo("Ingrese la velocidad en m/s: ");
@@ -53,8 +49,12 @@ int main(void)
             printf("\nEnergia cinetica calculada:\n");
             printf("K = 1/2 * %.1f kg * (%.1f m/s)^2\n", masa, velocidad);
             printf("K = %.2e joules\n", energiaCinetica);
-        }
-        else if (strcmp(opcion, "3\n") == 0 || strcmp(opcion, "3") == 0)
+            if (!registrarEnergia(&reporte, masa, velocidad, energiaCinetica))
+            {
+                printf("El reporte esta lleno; este resultado no se guardara.\n");
+            }
+        }   
+        else if (opcion == 3)
         {
             printf("\nLa Tierra tiene una masa mucho mayor que la Luna y, por eso,\n");
             printf("su atraccion gravitatoria es mas intensa. Alejarse de la\n");
@@ -63,7 +63,7 @@ int main(void)
             printf("nave. La trayectoria y las condiciones iniciales tambien\n");
             printf("influyen en el combustible necesario.\n");
         }
-        else if (strcmp(opcion, "4\n") == 0 || strcmp(opcion, "4") == 0)
+        else if (opcion == 4) 
         {
             printf("\nEstimacion idealizada: no considera la gravedad ni cambios\n");
             printf("de velocidad, por lo que no representa la trayectoria real.\n");
@@ -81,18 +81,24 @@ int main(void)
                 printf("Tiempo estimado: %.0f segundos (%.2f horas).\n",
                        tiempoSegundos, tiempoSegundos / 3600.0);
                 printf("Se uso la formula tiempo = distancia / velocidad.\n");
+                if (!registrarTiempo(&reporte, distanciaKm, velocidad,
+                                     tiempoSegundos))
+                {
+                    printf("El reporte esta lleno; este resultado no se guardara.\n");
+                }
             }
         }
-        else if (strcmp(opcion, "5\n") == 0 || strcmp(opcion, "5") == 0)
+        else if (opcion == 5) 
         {
             printf("\nDatos de referencia del escenario:\n");
-            printf("Masa de Orion: 26000 kg\n");
-            printf("Velocidad luego de la TLI: 10900 m/s\n");
-            printf("Altitud de orbita baja: 192000 m\n");
-            printf("Distancia media Tierra-Luna: 384000 km\n");
+            printf("Masa de Orion: %.0f kg\n", MASA_ORION_KG); 
+            printf("Velocidad luego de la TLI: %.0f m/s\n", VELOCIDAD_TLI_MS);
+            printf("Altitud de orbita baja: %.0f m\n", ALTITUD_ORBITA_M);
+            printf("Distancia media Tierra-Luna: %.0f km\n",
+                   DISTANCIA_TIERRA_LUNA_M / 1000.0);
             printf("Estos valores pueden usarse como referencia en los calculos.\n");
         }
-        else if (strcmp(opcion, "6\n") == 0 || strcmp(opcion, "6") == 0)
+        else if (opcion == 6) 
         {
             printf("\nEstimacion con los datos de referencia de la mision.\n");
             printf("El punto se estima igualando la atraccion de la Tierra y la Luna.\n");
@@ -109,18 +115,20 @@ int main(void)
                 printf("Trabajo externo por unidad de masa: %.2e J/kg\n",
                        trabajoPorMasa);
                 printf("Se usa Wext/m = diferencia de energia potencial - K inicial/m.\n");
+                if (!registrarTrabajo(&reporte, distanciaEquilibrio,
+                                      trabajoPorMasa))
+                {
+                    printf("El reporte esta lleno; este resultado no se guardara.\n");
+                }
             }
             else
             {
                 printf("No se pudo calcular con estos datos del modelo.\n");
             }
         }
-        else if (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0)
-        {
-            printf("Opcion no valida. Ingrese 1, 2, 3, 4, 5 o 0.\n");
-        }
-    } while (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0);
+    } while (opcion != 0); 
 
+    mostrarReporte(&reporte); 
     printf("\nGracias por usar el simulador: acompanando a Orion en su viaje a la Luna.\n");
     printf("AED 2026, Comision C. Hasta la proxima!\n");
 
