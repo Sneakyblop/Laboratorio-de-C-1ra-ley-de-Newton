@@ -25,6 +25,7 @@ int main(void)
         printf("2. Calcular energia cinetica inicial\n");
         printf("3. Leer sobre el gasto de combustible\n");
         printf("4. Estimar tiempo de viaje a velocidad constante\n");
+        printf("5. Ver datos de referencia de la mision\n");
         printf("0. Salir\n");
         printf("Seleccione una opcion: ");
 
@@ -79,9 +80,18 @@ int main(void)
                 printf("Se uso la formula tiempo = distancia / velocidad.\n");
             }
         }
+        else if (strcmp(opcion, "5\n") == 0 || strcmp(opcion, "5") == 0)
+        {
+            printf("\nDatos de referencia del escenario:\n");
+            printf("Masa de Orion: 26000 kg\n");
+            printf("Velocidad luego de la TLI: 10900 m/s\n");
+            printf("Altitud de orbita baja: 192000 m\n");
+            printf("Distancia media Tierra-Luna: 384000 km\n");
+            printf("Estos valores pueden usarse como referencia en los calculos.\n");
+        }
         else if (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0)
         {
-            printf("Opcion no valida. Ingrese 1, 2, 3, 4 o 0.\n");
+            printf("Opcion no valida. Ingrese 1, 2, 3, 4, 5 o 0.\n");
         }
     } while (strcmp(opcion, "0\n") != 0 && strcmp(opcion, "0") != 0);
 
