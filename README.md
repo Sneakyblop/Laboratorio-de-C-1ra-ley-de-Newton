@@ -1,7 +1,13 @@
-# Laboratorio-de-C-1ra-ley-de-Newton
+#Mision Artemis
 Trabajo de C del grupo "Las Ingenieras", com C 2026
 
-## Avance actual
+## Integrantes del Grupo:
+-Galarza, Karla.
+-Martínez, Araceli.
+-Ovelar, Eliana.
+-Pedretti, Maria Teresa.
+
+## Breve introducción al escenario 3: 
 
 El programa  presenta un menu para leer sobre la
 inercia de Orion, calcular su energia cinetica y consultar una explicacion
