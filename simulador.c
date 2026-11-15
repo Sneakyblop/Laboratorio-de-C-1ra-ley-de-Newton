@@ -1,3 +1,4 @@
+#include <float.h>
 #include <math.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -7,6 +8,35 @@
 double calcularEnergiaCinetica(double masa, double velocidad)
 {
     return 0.5 * masa * velocidad * velocidad;
+}
+
+int calcularTiempoViaje(double distanciaKm, double velocidad,
+                        double *tiempoSegundos)
+{
+    double distanciaMetros;
+    double tiempoCalculado;
+
+    if (tiempoSegundos == NULL || !isfinite(distanciaKm) ||
+        !isfinite(velocidad) || distanciaKm <= 0.0 || velocidad <= 0.0)
+    {
+        return 0;
+    }
+
+    if (distanciaKm > DBL_MAX / 1000.0)
+    {
+        return 0;
+    }
+
+    distanciaMetros = distanciaKm * 1000.0;
+    tiempoCalculado = distanciaMetros / velocidad;
+
+    if (!isfinite(tiempoCalculado))
+    {
+        return 0;
+    }
+
+    *tiempoSegundos = tiempoCalculado;
+    return 1;
 }
 
 int calcularTrabajoPorMasa(double altitud, double distancia,
@@ -56,6 +86,33 @@ int calcularTrabajoPorMasa(double altitud, double distancia,
     *distanciaEquilibrio = puntoEquilibrio;
     *trabajoPorMasa = trabajoCalculado;
     return 1;
+}
+
+void mostrarInercia(void)
+{
+    printf("\nDespués de la maniobra TLI, los motores se apagan y Orion\n");
+    printf("continúa moviéndose por inercia. La gravedad terrestre\n");
+    printf("actúa sobre la nave y modifica su velocidad y trayectoria.\n");
+}
+
+void mostrarJustificacionEnergetica(void)
+{
+    printf("\nLa Tierra tiene mucha más masa que la Luna y su atracción\n");
+    printf("gravitatoria es más intensa. Por eso, alejarse de la Tierra\n");
+    printf("requiere aportar energía. En el regreso, la gravedad terrestre\n");
+    printf("puede ayudar a acelerar la nave. La cantidad de combustible\n");
+    printf("también depende de la trayectoria y de las maniobras necesarias.\n");
+}
+
+void mostrarDatosMision(void)
+{
+    printf("\nDatos de referencia del escenario:\n");
+    printf("Masa de Orion: %.0f kg\n", MASA_ORION_KG);
+    printf("Velocidad luego de la TLI: %.0f m/s\n", VELOCIDAD_TLI_MS);
+    printf("Altitud de órbita baja: %.0f m\n", ALTITUD_ORBITA_M);
+    printf("Distancia media Tierra-Luna: %.0f km\n",
+           DISTANCIA_TIERRA_LUNA_M / 1000.0);
+    printf("Puedes usar estos valores como referencia en los cálculos.\n");
 }
 
 void inicializarReporte(Reporte *reporte)
@@ -130,8 +187,8 @@ void mostrarReporte(const Reporte *reporte)
         return;
     }
 
-    printf("\n===== Reporte de esta sesion =====\n");
-    printf("Calculos de energia cinetica: %d\n", reporte->cantidadEnergias);
+    printf("\n===== Reporte de esta sesión =====\n");
+    printf("Cálculos de energía cinética: %d\n", reporte->cantidadEnergias);
     for (i = 0; i < reporte->cantidadEnergias; i++)
     {
         printf("%d) m = %.1f kg, v = %.1f m/s -> K = %.2e J\n",
@@ -140,7 +197,7 @@ void mostrarReporte(const Reporte *reporte)
                reporte->energias[i].energia);
     }
 
-    printf("Calculos de trabajo por unidad de masa: %d\n",
+    printf("Cálculos de trabajo por unidad de masa: %d\n",
            reporte->cantidadTrabajos);
     for (i = 0; i < reporte->cantidadTrabajos; i++)
     {

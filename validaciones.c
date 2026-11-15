@@ -29,7 +29,7 @@ double leerNumeroPositivo(const char mensaje[])
             while ((caracter = getchar()) != '\n' && caracter != EOF)
             {
             }
-            printf("La entrada es demasiado larga. Intente nuevamente.\n");
+            printf("La entrada es demasiado larga. Intentá de nuevo.\n");
             continue;
         }
 
@@ -44,7 +44,7 @@ double leerNumeroPositivo(const char mensaje[])
         if (fin == entrada || *fin != '\0' || errno == ERANGE ||
             !(valor > 0.0) || valor > DBL_MAX)
         {
-            printf("Ingrese un numero valido mayor que cero.\n");
+            printf("Ingresá un número válido mayor que cero.\n");
             continue;
         }
 
@@ -65,7 +65,7 @@ int leerEnteroEnRango(const char mensaje[], int minimo, int maximo)
 
         if (fgets(entrada, sizeof(entrada), stdin) == NULL)
         {
-            printf("\nNo se pudo leer la opcion.\n");
+            printf("\nNo se pudo leer la opción.\n");
             exit(EXIT_FAILURE);
         }
 
@@ -74,7 +74,7 @@ int leerEnteroEnRango(const char mensaje[], int minimo, int maximo)
             while ((caracter = getchar()) != '\n' && caracter != EOF)
             {
             }
-            printf("La entrada es demasiado larga. Intente nuevamente.\n");
+            printf("La entrada es demasiado larga. Intentá de nuevo.\n");
             continue;
         }
 
@@ -88,13 +88,13 @@ int leerEnteroEnRango(const char mensaje[], int minimo, int maximo)
 
         if (fin == entrada || *fin != '\0' || errno == ERANGE)
         {
-            printf("Entrada invalida. Ingrese un numero entero.\n");
+            printf("Entrada inválida. Ingresá un número entero.\n");
             continue;
         }
 
         if (valor < minimo || valor > maximo)
         {
-            printf("Opcion fuera de rango. Ingrese un valor entre %d y %d.\n",
+            printf("Opción fuera de rango. Ingresá un valor entre %d y %d.\n",
                    minimo, maximo);
             continue;
         }

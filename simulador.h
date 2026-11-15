@@ -42,10 +42,15 @@ typedef struct
 } Reporte;
 
 double calcularEnergiaCinetica(double masa, double velocidad);
+int calcularTiempoViaje(double distanciaKm, double velocidad,
+                        double *tiempoSegundos);
 int calcularTrabajoPorMasa(double altitud, double distancia,
                            double velocidadInicial,
                            double *distanciaEquilibrio,
                            double *trabajoPorMasa);
+void mostrarInercia(void);
+void mostrarJustificacionEnergetica(void);
+void mostrarDatosMision(void);
 void inicializarReporte(Reporte *reporte);
 int registrarEnergia(Reporte *reporte, double masa, double velocidad,
                      double energia);
@@ -55,4 +60,4 @@ int registrarTiempo(Reporte *reporte, double distanciaKm, double velocidad,
                     double tiempoSegundos);
 void mostrarReporte(const Reporte *reporte);
 
-#endif 
+#endif
